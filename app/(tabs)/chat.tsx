@@ -1,21 +1,31 @@
-import { Text, View, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import Header from '@/components/Chat/Header';
+import EmptyChatPage from '@/components/Chat/EmptyChatPage';
+import ContactsModal from '@/components/Chat/ContactsModal';
 
-export default function chat() {
+const ChatScreen: React.FC = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>chat screen</Text>
-    </View>
+    <SafeAreaView style={styles.safeArea}>
+      {/* Barre d'en-tête */}
+      <Header onPlusPress={() => setModalVisible(true)} />
+
+      {/* Page vide (pour l'instant) */}
+      <EmptyChatPage />
+
+      {/* Modal des contacts */}
+      <ContactsModal visible={modalVisible} onClose={() => setModalVisible(false)} />
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    backgroundColor: '#25292e',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    color: '#fff',
+    backgroundColor: '#f0f0f5',
   },
 });
+
+export default ChatScreen;
