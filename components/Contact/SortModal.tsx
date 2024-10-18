@@ -1,52 +1,26 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Modal,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 interface SortModalProps {
   visible: boolean;
   onClose: () => void;
   onSort: (criteria: string) => void;
+  selectedCriteria: string;
 }
 
-const SortModal: React.FC<SortModalProps> = ({ visible, onClose, onSort }) => {
+const SortModal: React.FC<SortModalProps> = ({ visible, onClose, onSort, selectedCriteria }) => {
   return (
     <Modal
-      animationType="slide"
+      animationType="fade"
       transparent={true}
       visible={visible}
       onRequestClose={onClose}
     >
-      <View style={styles.modalContainer}>
+      <TouchableOpacity style={styles.modalContainer} onPress={onClose}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Trier par</Text>
-
-          {/* Tri par ordre alphabétique */}
-          <TouchableOpacity
-            style={styles.optionButton}
-            onPress={() => {
-              onSort('alphabetical-asc');
-              onClose();
-            }}
-          >
-            <Text style={styles.optionText}>Ordre alphabétique A-Z</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.optionButton}
-            onPress={() => {
-              onSort('alphabetical-desc');
-              onClose();
-            }}
-          >
-            <Text style={styles.optionText}>Ordre alphabétique Z-A</Text>
-          </TouchableOpacity>
-
-          {/* Tri par statut (online/offline) */}
+          
+          {/* Option 1: Par heure de connexion */}
           <TouchableOpacity
             style={styles.optionButton}
             onPress={() => {
@@ -54,25 +28,28 @@ const SortModal: React.FC<SortModalProps> = ({ visible, onClose, onSort }) => {
               onClose();
             }}
           >
-            <Text style={styles.optionText}>Statut : En ligne</Text>
+            <Text style={styles.optionText}>par heure de connexion</Text>
+            {selectedCriteria === 'status-online' && (
+              <Ionicons name="checkmark" size={20} color="#007aff" style={styles.checkIcon} />
+            )}
           </TouchableOpacity>
 
+          {/* Option 2: Par nom */}
           <TouchableOpacity
             style={styles.optionButton}
             onPress={() => {
-              onSort('status-offline');
+              onSort('alphabetical-asc');
               onClose();
             }}
           >
-            <Text style={styles.optionText}>Statut : Hors ligne</Text>
+            <Text style={styles.optionText}>par nom</Text>
+            {selectedCriteria === 'alphabetical-asc' && (
+              <Ionicons name="checkmark" size={20} color="#007aff" style={styles.checkIcon} />
+            )}
           </TouchableOpacity>
-
-          {/* Bouton Annuler */}
-          <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-            <Text style={styles.cancelText}>Annuler</Text>
-          </TouchableOpacity>
+          
         </View>
-      </View>
+      </TouchableOpacity>
     </Modal>
   );
 };
@@ -80,40 +57,35 @@ const SortModal: React.FC<SortModalProps> = ({ visible, onClose, onSort }) => {
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    paddingLeft: 10,
   },
   modalContent: {
-    width: '80%',
     backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 20,
-    alignItems: 'center',
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    width: '70%',
+    borderRadius: 15,
+    marginTop: 115,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 8, 
   },
   optionButton: {
-    width: '100%',
-    padding: 15,
-    backgroundColor: '#f0f0f5',
-    borderRadius: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between', // Aligne l'icône et le texte
     alignItems: 'center',
-    marginBottom: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
   },
   optionText: {
     fontSize: 16,
-    color: '#007aff',
+    color: '#000',
   },
-  cancelButton: {
-    marginTop: 20,
-  },
-  cancelText: {
-    fontSize: 16,
-    color: '#ff3b30',
+  checkIcon: {
+    marginLeft: 10,
   },
 });
 

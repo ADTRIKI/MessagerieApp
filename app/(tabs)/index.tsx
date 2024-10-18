@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import SortModal from '../../components/Contact/SortModal'; // Assure-toi que ce chemin est correct
+import SortModal from '../../components/Contact/SortModal';
+import AddContactModal from '../../components/Contact/AddContactModal';  // Import de la modal
 
-// Mock data pour la liste des contacts
-const contactsData = Array.from({ length: 30 }, (_, i) => ({
-  id: i.toString(),
-  name: `Contact ${i + 1}`,
-  status: i % 2 === 0 ? 'Online' : 'Offline',
-}));
+const contactsData = [
+  { id: '1', name: 'John Doe', phoneNumber: '+1 555-123-456', status: 'Online' },
+  { id: '2', name: 'Jane Smith', phoneNumber: '+1 555-987-654', status: 'Offline' },
+  { id: '3', name: 'Alice Johnson', phoneNumber: '+1 555-321-987', status: 'Online' },
+  { id: '4', name: 'Bob Brown', phoneNumber: '+1 555-654-321', status: 'Offline' },
+  { id: '5', name: 'Charlie Davis', phoneNumber: '+1 555-789-123', status: 'Online' },
+];
 
 const ContactsScreen: React.FC = () => {
   const [contacts, setContacts] = useState(contactsData);
   const [modalVisible, setModalVisible] = useState(false);
+  const [addContactModalVisible, setAddContactModalVisible] = useState(false);  // Pour la modal d'ajout de contact
 
-  // Fonction pour trier les contacts
   const handleSort = (criteria: string) => {
     let sortedContacts = [...contacts];
     
@@ -22,14 +24,8 @@ const ContactsScreen: React.FC = () => {
       case 'alphabetical-asc':
         sortedContacts.sort((a, b) => a.name.localeCompare(b.name));
         break;
-      case 'alphabetical-desc':
-        sortedContacts.sort((a, b) => b.name.localeCompare(a.name));
-        break;
       case 'status-online':
         sortedContacts = sortedContacts.filter(contact => contact.status === 'Online');
-        break;
-      case 'status-offline':
-        sortedContacts = sortedContacts.filter(contact => contact.status === 'Offline');
         break;
     }
 
@@ -44,7 +40,7 @@ const ContactsScreen: React.FC = () => {
           <Text style={styles.headerText}>Trier</Text>
         </TouchableOpacity>
         <Text style={styles.title}>Contacts</Text>
-        <TouchableOpacity onPress={() => console.log('Ajouter un contact')}>
+        <TouchableOpacity onPress={() => setAddContactModalVisible(true)}>
           <Ionicons name="add-outline" size={24} color="#007aff" />
         </TouchableOpacity>
       </View>
@@ -76,7 +72,7 @@ const ContactsScreen: React.FC = () => {
             </View>
             <View>
               <Text style={styles.contactName}>{item.name}</Text>
-              <Text style={styles.contactStatus}>{item.status}</Text>
+              <Text style={styles.contactStatus}>{item.phoneNumber}</Text>
             </View>
           </TouchableOpacity>
         )}
@@ -86,8 +82,14 @@ const ContactsScreen: React.FC = () => {
       <SortModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        onSort={handleSort}
-      />
+        onSort={handleSort} selectedCriteria={''}      />
+
+      {/* Modal d'ajout de contact */}
+      <AddContactModal
+        visible={addContactModalVisible}
+        onClose={() => setAddContactModalVisible(false)} onSave={function (contact: any): void {
+          throw new Error('Function not implemented.');
+        } }      />
     </View>
   );
 };

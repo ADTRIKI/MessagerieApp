@@ -96,16 +96,19 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: '100%',
-    height: '70%',
+    height: '80%',
     backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 20,
+    paddingHorizontal: 15,  // Ajout de padding sur les côtés
   },
+    
   topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 15,
+    marginBottom: 25,
+    paddingHorizontal: 20,
+    paddingTop: 20, 
   },
   cancelText: {
     color: '#007aff',
@@ -132,6 +135,7 @@ const styles = StyleSheet.create({
   },
   mainOptions: {
     marginBottom: 20,
+    paddingHorizontal: 15,  // Ajout de padding pour espacer les options principales du bord
   },
   optionItem: {
     flexDirection: 'row',
@@ -149,6 +153,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#f0f0f5',
+    paddingHorizontal: 15, // Ajout de padding pour les items de contact
   },
   avatar: {
     width: 40,
